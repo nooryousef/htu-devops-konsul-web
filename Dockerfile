@@ -1,16 +1,16 @@
-# base image
-FROM node:10.15.0
- 
-# set working directory
-RUN mkdir /app
-WORKDIR  /app
- 
-# add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
- 
-# install and cache app dependencies
-COPY package.json /app/package.json
+FROM node:10.15.0 as ui-builder
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+COPY package.json /usr/src/app/package.json
 RUN npm install
 RUN npm install -g @vue/cli
-# start app
-CMD ["npm", "run", "serve"]
+COPY . /usr/src/app
+ARG VUE_APP_API_URL
+ENV VUE_APP_API_URL $VUE_APP_API_URL
+RUN npm run build
+ 
+FROM nginx
+COPY  --from=ui-builder /usr/src/app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
