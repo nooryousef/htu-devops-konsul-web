@@ -6,5 +6,10 @@
 
 module.exports = {
   siteName: "Konsul",
-  plugins: [],
+  plugins: [ {
+      use: '@gridsome/source-faker',
+      options: {
+        numNode: 50
+      }
+    } ],
 };
