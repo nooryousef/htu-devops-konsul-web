@@ -8,7 +8,7 @@ RUN npm install -g @vue/cli
 COPY . /usr/src/app
 ARG VUE_APP_API_URL
 ENV VUE_APP_API_URL $VUE_APP_API_URL
-RUN npm run build
+RUN gridsome build 
  
 FROM nginx
 COPY  --from=ui-builder /usr/src/app/dist /usr/share/nginx/html
