@@ -10,8 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: bash setup.sh
-  displayName: 'Run a one-line script'
+- script: Bash setup.sh
+  displayName: 'my setup'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
